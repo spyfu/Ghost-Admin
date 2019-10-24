@@ -66,4 +66,29 @@
             {{svg-jar "koenig/kg-link" class=(concat (if activeMarkupTagNames.isA "fill-blue-l2" "fill-white") " w4 h4")}}
         </button>
     </li>
+    <li class="ma0 lh-solid">
+        <button
+            type="button"
+            title="List"
+            class="dib dim-lite link h10 w9 nudge-top--1"
+            {{action 'toggleSection' 'ul'}}
+        >
+        <div class="fill-white" style="height: 20px; width: 20px; padding-left: 4px;">
+            <img src="assets/img/ul.png" />
+        </div>
+        {{ svg-jar "koenig/ul" }}
+        </button>
+    </li>
+    <li class="ma0 lh-solid">
+        <button
+            type="button"
+            title="List"
+            class="dib dim-lite link h10 w9 nudge-top--1"
+            {{action 'toggleSection' 'ol'}}
+        >
+        <div class="fill-white">
+            <img src="assets/img/ol.png" style="height: 18px; width: 20px; padding-right: 4px;" />
+        </div>
+        </button>
+    </li>
 {{/kg-action-bar}}
