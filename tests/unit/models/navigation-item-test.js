@@ -3,10 +3,13 @@ import {expect} from 'chai';
 import {setupTest} from 'ember-mocha';
 
 describe('Unit: Model: navigation-item', function () {
-    setupTest();
+    setupTest('model:navigation-item', {
+        // Specify the other units that are required for this test.
+        needs: []
+    });
 
     it('isComplete is true when label and url are filled', function () {
-        let model = this.owner.lookup('model:navigation-item');
+        let model = this.subject();
 
         model.set('label', 'test');
         model.set('url', 'test');
@@ -15,7 +18,7 @@ describe('Unit: Model: navigation-item', function () {
     });
 
     it('isComplete is false when label is blank', function () {
-        let model = this.owner.lookup('model:navigation-item');
+        let model = this.subject();
 
         model.set('label', '');
         model.set('url', 'test');
@@ -24,7 +27,7 @@ describe('Unit: Model: navigation-item', function () {
     });
 
     it('isComplete is false when url is blank', function () {
-        let model = this.owner.lookup('model:navigation-item');
+        let model = this.subject();
 
         model.set('label', 'test');
         model.set('url', '');
@@ -33,7 +36,7 @@ describe('Unit: Model: navigation-item', function () {
     });
 
     it('isBlank is true when label and url are blank', function () {
-        let model = this.owner.lookup('model:navigation-item');
+        let model = this.subject();
 
         model.set('label', '');
         model.set('url', '');
@@ -42,7 +45,7 @@ describe('Unit: Model: navigation-item', function () {
     });
 
     it('isBlank is false when label is present', function () {
-        let model = this.owner.lookup('model:navigation-item');
+        let model = this.subject();
 
         model.set('label', 'test');
         model.set('url', '');
@@ -51,7 +54,7 @@ describe('Unit: Model: navigation-item', function () {
     });
 
     it('isBlank is false when url is present', function () {
-        let model = this.owner.lookup('model:navigation-item');
+        let model = this.subject();
 
         model.set('label', '');
         model.set('url', 'test');

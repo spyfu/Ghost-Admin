@@ -1,7 +1,9 @@
 {{#power-select
     search=(action "search")
     onchange=(action "openSelected")
-    placeholder="Search site..."
+    placeholder="Search..."
+    onopen=(action "onFocus")
+    onclose=(action "onBlur")
     searchEnabled=false
     triggerComponent="gh-search-input-trigger"
     renderInPlace=true

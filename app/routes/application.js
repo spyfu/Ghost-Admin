@@ -37,7 +37,6 @@ export default Route.extend(ApplicationRouteMixin, ShortcutsRoute, {
     settings: service(),
     tour: service(),
     ui: service(),
-    whatsNew: service(),
 
     shortcuts,
 
@@ -61,21 +60,20 @@ export default Route.extend(ApplicationRouteMixin, ShortcutsRoute, {
             this.set('appLoadTransition', transition);
             transition.send('loadServerNotifications');
 
+            let configPromise = this.config.fetchAuthenticated();
+            let featurePromise = this.feature.fetch();
+            let settingsPromise = this.settings.fetch();
+            let tourPromise = this.tour.fetchViewed();
+
             // return the feature/settings load promises so that we block until
             // they are loaded to enable synchronous access everywhere
             return RSVP.all([
-                this.config.fetchAuthenticated(),
-                this.feature.fetch(),
-                this.settings.fetch(),
-                this.tour.fetchViewed()
+                configPromise,
+                featurePromise,
+                settingsPromise,
+                tourPromise
             ]).then((results) => {
                 this._appLoaded = true;
-
-                // kick off background update of "whats new"
-                // - we don't want to block the router for this
-                // - we need the user details to know what the user has seen
-                this.whatsNew.fetchLatest.perform();
-
                 return results;
             });
         }
@@ -185,6 +183,10 @@ export default Route.extend(ApplicationRouteMixin, ShortcutsRoute, {
             // fallback to 500 error page
             return true;
         }
+    },
+
+    title(tokens) {
+        return `${tokens.join(' - ')} - ${this.get('config.blogTitle')}`;
     },
 
     sessionAuthenticated() {

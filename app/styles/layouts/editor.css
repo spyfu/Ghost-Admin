@@ -117,7 +117,6 @@
 .seo-preview {
     font-family: Arial, sans-serif;
     background: #fff;
-    border: 1px solid var(--whitegrey);
     padding: 10px 12px;
 }
 
@@ -334,7 +333,7 @@
 .gh-editor-status {
     color: var(--midgrey);
     font-size: 1.3rem;
-    font-weight: 400;
+    font-weight: 300;
 }
 
 .gh-editor-container {
@@ -348,7 +347,7 @@
 
 .gh-editor-inner {
     height: 100%;
-    max-width: 740px;
+    max-width: 760px;
     margin: 0 auto;
 }
 
@@ -364,12 +363,6 @@
     font-weight: 700;
     letter-spacing: 0.04rem;
     overflow: hidden;
-    box-shadow: none;
-}
-
-.gh-editor-title:focus {
-    box-shadow: none !important;
-    border: none !important;
 }
 
 .gh-editor-wordcount {
@@ -515,7 +508,7 @@
 
 .gh-editor .gh-editor-title,
 .gh-markdown-editor .CodeMirror-wrap {
-    max-width: 740px;
+    max-width: 760px;
     margin-right: auto;
     margin-left: auto;
     border: none;
@@ -696,18 +689,4 @@
 
 .CodeMirror .CodeMirror-selected {
     background: color-mod(var(--blue) lightness(+30%));
-}
-
-figure {
-    margin: 0;
-    padding: 0;
-}
-
-.koenig-card-click-overlay {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 400;
 }

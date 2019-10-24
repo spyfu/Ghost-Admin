@@ -29,14 +29,5 @@ export default Model.extend(ValidationEngine, {
             return {isActive: true};
         }
     }),
-    defaultContentVisibility: attr('string'),
-    membersSubscriptionSettings: attr('string'),
-    metaTitle: attr('string'),
-    metaDescription: attr('string'),
-    twitterTitle: attr('string'),
-    twitterDescription: attr('string'),
-    twitterImage: attr('string'),
-    ogTitle: attr('string'),
-    ogDescription: attr('string'),
-    ogImage: attr('string')
+    membersSubscriptionSettings: attr('string')
 });

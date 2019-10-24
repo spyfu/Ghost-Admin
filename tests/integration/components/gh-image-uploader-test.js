@@ -29,13 +29,13 @@ const sessionStub = Service.extend({
 });
 
 const stubSuccessfulUpload = function (server, delay = 0) {
-    server.post('/ghost/api/v3/admin/images/upload/', function () {
+    server.post('/ghost/api/v2/admin/images/upload/', function () {
         return [200, {'Content-Type': 'application/json'}, '{"images": [{"url":"/content/images/test.png"}]}'];
     }, delay);
 };
 
 const stubFailedUpload = function (server, code, error, delay = 0) {
-    server.post('/ghost/api/v3/admin/images/upload/', function () {
+    server.post('/ghost/api/v2/admin/images/upload/', function () {
         return [code, {'Content-Type': 'application/json'}, JSON.stringify({
             errors: [{
                 type: error,
@@ -61,6 +61,12 @@ describe('Integration: Component: gh-image-uploader', function () {
         server.shutdown();
     });
 
+    it('renders', async function () {
+        this.set('image', 'http://example.com/test.png');
+        await render(hbs`{{gh-image-uploader image=image}}`);
+        expect(this.$()).to.have.length(1);
+    });
+
     it('renders form with supplied alt text', async function () {
         await render(hbs`{{gh-image-uploader image=image altText="text test"}}`);
         expect(find('[data-test-file-input-description]')).to.have.trimmed.text('Upload image of "text test"');
@@ -78,7 +84,7 @@ describe('Integration: Component: gh-image-uploader', function () {
         await fileUpload('input[type="file"]', ['test'], {name: 'test.png'});
 
         expect(server.handledRequests.length).to.equal(1);
-        expect(server.handledRequests[0].url).to.equal('/ghost/api/v3/admin/images/upload/');
+        expect(server.handledRequests[0].url).to.equal('/ghost/api/v2/admin/images/upload/');
         expect(server.handledRequests[0].requestHeaders.Authorization).to.be.undefined;
     });
 
@@ -177,7 +183,7 @@ describe('Integration: Component: gh-image-uploader', function () {
     });
 
     it('handles file too large error directly from the web server', async function () {
-        server.post('/ghost/api/v3/admin/images/upload/', function () {
+        server.post('/ghost/api/v2/admin/images/upload/', function () {
             return [413, {}, ''];
         });
         await render(hbs`{{gh-image-uploader image=image update=(action update)}}`);
@@ -197,7 +203,7 @@ describe('Integration: Component: gh-image-uploader', function () {
     });
 
     it('handles unknown failure', async function () {
-        server.post('/ghost/api/v3/admin/images/upload/', function () {
+        server.post('/ghost/api/v2/admin/images/upload/', function () {
             return [500, {'Content-Type': 'application/json'}, ''];
         });
         await render(hbs`{{gh-image-uploader image=image update=(action update)}}`);
@@ -273,7 +279,7 @@ describe('Integration: Component: gh-image-uploader', function () {
                     files: []
                 }
             });
-            $(find('.gh-image-uploader')).trigger(dragover);
+            this.$('.gh-image-uploader').trigger(dragover);
         });
         await settled();
 
@@ -299,7 +305,7 @@ describe('Integration: Component: gh-image-uploader', function () {
         await render(hbs`{{gh-image-uploader uploadSuccess=(action uploadSuccess)}}`);
 
         run(() => {
-            $(find('.gh-image-uploader')).trigger(drop);
+            this.$('.gh-image-uploader').trigger(drop);
         });
         await settled();
 

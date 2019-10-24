@@ -8,6 +8,7 @@ import {inject as service} from '@ember/service';
 import {task, timeout} from 'ember-concurrency';
 
 export default Controller.extend({
+    config: service(),
     ghostPaths: service(),
 
     isTesting: undefined,

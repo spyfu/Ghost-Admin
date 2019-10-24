@@ -2,10 +2,22 @@ import Pretender from 'pretender';
 import {describe, it} from 'mocha';
 import {expect} from 'chai';
 import {run} from '@ember/runloop';
-import {setupTest} from 'ember-mocha';
+import {setupModelTest} from 'ember-mocha';
 
 describe('Unit: Model: invite', function () {
-    setupTest();
+    setupModelTest('invite', {
+        needs: [
+            'model:role',
+            'serializer:application',
+            'serializer:invite',
+            'transform:moment-utc',
+            'service:ghost-paths',
+            'service:ajax',
+            'service:session',
+            'service:feature',
+            'service:tour'
+        ]
+    });
 
     describe('with network', function () {
         let server;
@@ -19,16 +31,15 @@ describe('Unit: Model: invite', function () {
         });
 
         it('resend hits correct endpoint', function () {
-            let store = this.owner.lookup('service:store');
-            let model = store.createRecord('invite');
+            let model = this.subject();
             let role;
 
-            server.post('/ghost/api/v3/admin/invites/', function () {
+            server.post('/ghost/api/v2/admin/invites/', function () {
                 return [200, {}, '{}'];
             });
 
             run(() => {
-                role = store.push({data: {id: 1, type: 'role', attributes: {name: 'Editor'}}});
+                role = this.store().push({data: {id: 1, type: 'role', attributes: {name: 'Editor'}}});
                 model.set('email', 'resend-test@example.com');
                 model.set('role', role);
                 model.resend();

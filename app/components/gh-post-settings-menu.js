@@ -12,7 +12,6 @@ import {task, timeout} from 'ember-concurrency';
 const PSM_ANIMATION_LENGTH = 400;
 
 export default Component.extend(SettingsMenuMixin, {
-    feature: service(),
     store: service(),
     config: service(),
     ghostPaths: service(),
@@ -45,8 +44,6 @@ export default Component.extend(SettingsMenuMixin, {
     twitterDescription: or('twitterDescriptionScratch', 'customExcerptScratch', 'seoDescription'),
     twitterImage: or('post.twitterImage', 'post.featureImage'),
     twitterTitle: or('twitterTitleScratch', 'seoTitle'),
-
-    showVisibilityInput: or('session.user.isOwner', 'session.user.isAdmin', 'session.user.isEditor'),
 
     seoTitle: computed('metaTitleScratch', 'post.titleScratch', function () {
         return this.metaTitleScratch || this.post.titleScratch || '(Untitled)';

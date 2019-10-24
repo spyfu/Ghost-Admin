@@ -2,10 +2,14 @@ import $ from 'jquery';
 import AuthenticatedRoute from 'ghost-admin/routes/authenticated';
 import CurrentUserSettings from 'ghost-admin/mixins/current-user-settings';
 import RSVP from 'rsvp';
+import styleBody from 'ghost-admin/mixins/style-body';
 import {inject as service} from '@ember/service';
 
-export default AuthenticatedRoute.extend(CurrentUserSettings, {
+export default AuthenticatedRoute.extend(styleBody, CurrentUserSettings, {
     settings: service(),
+
+    titleToken: 'Settings - Design',
+    classNames: ['settings-view-design'],
 
     beforeModel() {
         this._super(...arguments);
@@ -50,11 +54,5 @@ export default AuthenticatedRoute.extend(CurrentUserSettings, {
         activateTheme(theme) {
             return this.controller.send('activateTheme', theme);
         }
-    },
-
-    buildRouteInfoMetadata() {
-        return {
-            titleToken: 'Settings - Design'
-        };
     }
 });

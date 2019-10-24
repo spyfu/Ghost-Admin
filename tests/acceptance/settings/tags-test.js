@@ -1,13 +1,14 @@
+import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 import wait from 'ember-test-helpers/wait';
 import windowProxy from 'ghost-admin/utils/window-proxy';
 import {Response} from 'ember-cli-mirage';
 import {afterEach, beforeEach, describe, it} from 'mocha';
 import {authenticateSession, invalidateSession} from 'ember-simple-auth/test-support';
 import {blur, click, currentRouteName, currentURL, fillIn, find, findAll} from '@ember/test-helpers';
+import {errorOverride, errorReset} from 'ghost-admin/tests/helpers/adapter-error';
 import {expect} from 'chai';
 import {run} from '@ember/runloop';
 import {setupApplicationTest} from 'ember-mocha';
-import {setupMirage} from 'ember-cli-mirage/test-support';
 import {timeout} from 'ember-concurrency';
 import {visit} from '../../helpers/visit';
 
@@ -38,13 +39,13 @@ let keyup = function (code, el) {
     (el || document).dispatchEvent(event);
 };
 
-describe.skip('Acceptance: Tags', function () {
+describe('Acceptance: Settings - Tags', function () {
     let hooks = setupApplicationTest();
     setupMirage(hooks);
 
     it('redirects to signin when not authenticated', async function () {
         await invalidateSession();
-        await visit('/tags');
+        await visit('/settings/tags');
 
         expect(currentURL()).to.equal('/signin');
     });
@@ -93,60 +94,52 @@ describe.skip('Acceptance: Tags', function () {
             let tag1 = this.server.create('tag');
             let tag2 = this.server.create('tag');
 
-            await visit('/tags');
+            await visit('/settings/tags');
 
             // second wait is needed for the vertical-collection to settle
             await wait();
 
             // it redirects to first tag
-            // expect(currentURL(), 'currentURL').to.equal(`/tags/${tag1.slug}`);
-
-            // it doesn't redirect to first tag
-            expect(currentURL(), 'currentURL').to.equal('/tags');
+            expect(currentURL(), 'currentURL').to.equal(`/settings/tags/${tag1.slug}`);
 
             // it has correct page title
-            expect(document.title, 'page title').to.equal('Tags - Test Blog');
+            expect(document.title, 'page title').to.equal('Settings - Tags - Test Blog');
 
             // it highlights nav menu
             expect(find('[data-test-nav="tags"]'), 'highlights nav menu item')
                 .to.have.class('active');
 
             // it lists all tags
-            expect(findAll('.tags-list .gh-tags-list-item').length, 'tag list count')
+            expect(findAll('.settings-tags .settings-tag').length, 'tag list count')
                 .to.equal(2);
-            let tag = find('.tags-list .gh-tags-list-item');
-            expect(tag.querySelector('.gh-tag-list-name').textContent, 'tag list item title')
+            let tag = find('.settings-tags .settings-tag');
+            expect(tag.querySelector('.tag-title').textContent, 'tag list item title')
                 .to.equal(tag1.name);
 
             // it highlights selected tag
-            // expect(find(`a[href="/ghost/tags/${tag1.slug}"]`), 'highlights selected tag')
-            //     .to.have.class('active');
-
-            await visit(`/tags/${tag1.slug}`);
-
-            // second wait is needed for the tag details to settle
-            await wait();
+            expect(find(`a[href="/ghost/settings/tags/${tag1.slug}"]`), 'highlights selected tag')
+                .to.have.class('active');
 
             // it shows selected tag form
-            // expect(find('.tag-settings-pane h4').textContent, 'settings pane title')
-            //     .to.equal('Tag settings');
-            expect(find('.gh-tag-basic-settings-form input[name="name"]').value, 'loads correct tag into form')
+            expect(find('.tag-settings-pane h4').textContent, 'settings pane title')
+                .to.equal('Tag settings');
+            expect(find('.tag-settings-pane input[name="name"]').value, 'loads correct tag into form')
                 .to.equal(tag1.name);
 
             // click the second tag in the list
-            // let tagEditButtons = findAll('.tag-edit-button');
-            // await click(tagEditButtons[tagEditButtons.length - 1]);
+            let tagEditButtons = findAll('.tag-edit-button');
+            await click(tagEditButtons[tagEditButtons.length - 1]);
 
             // it navigates to selected tag
-            // expect(currentURL(), 'url after clicking tag').to.equal(`/tags/${tag2.slug}`);
+            expect(currentURL(), 'url after clicking tag').to.equal(`/settings/tags/${tag2.slug}`);
 
             // it highlights selected tag
-            // expect(find(`a[href="/ghost/tags/${tag2.slug}"]`), 'highlights selected tag')
-            //     .to.have.class('active');
+            expect(find(`a[href="/ghost/settings/tags/${tag2.slug}"]`), 'highlights selected tag')
+                .to.have.class('active');
 
             // it shows selected tag form
-            // expect(find('.tag-settings-pane input[name="name"]').value, 'loads correct tag into form')
-            //     .to.equal(tag2.name);
+            expect(find('.tag-settings-pane input[name="name"]').value, 'loads correct tag into form')
+                .to.equal(tag2.name);
 
             // simulate up arrow press
             run(() => {
@@ -157,11 +150,11 @@ describe.skip('Acceptance: Tags', function () {
             await wait();
 
             // it navigates to previous tag
-            expect(currentURL(), 'url after keyboard up arrow').to.equal(`/tags/${tag1.slug}`);
+            expect(currentURL(), 'url after keyboard up arrow').to.equal(`/settings/tags/${tag1.slug}`);
 
             // it highlights selected tag
-            // expect(find(`a[href="/ghost/tags/${tag1.slug}"]`), 'selects previous tag')
-            //     .to.have.class('active');
+            expect(find(`a[href="/ghost/settings/tags/${tag1.slug}"]`), 'selects previous tag')
+                .to.have.class('active');
 
             // simulate down arrow press
             run(() => {
@@ -172,11 +165,11 @@ describe.skip('Acceptance: Tags', function () {
             await wait();
 
             // it navigates to previous tag
-            expect(currentURL(), 'url after keyboard down arrow').to.equal(`/tags/${tag2.slug}`);
+            expect(currentURL(), 'url after keyboard down arrow').to.equal(`/settings/tags/${tag2.slug}`);
 
             // it highlights selected tag
-            // expect(find(`a[href="/ghost/tags/${tag2.slug}"]`), 'selects next tag')
-            //     .to.have.class('active');
+            expect(find(`a[href="/ghost/settings/tags/${tag2.slug}"]`), 'selects next tag')
+                .to.have.class('active');
 
             // trigger save
             await fillIn('.tag-settings-pane input[name="name"]', 'New Name');
@@ -198,7 +191,7 @@ describe.skip('Acceptance: Tags', function () {
             await click('.view-actions .gh-btn-green');
 
             // it navigates to the new tag route
-            expect(currentURL(), 'new tag URL').to.equal('/tags/new');
+            expect(currentURL(), 'new tag URL').to.equal('/settings/tags/new');
 
             // it displays the new tag form
             expect(find('.tag-settings-pane h4').textContent, 'settings pane title')
@@ -220,7 +213,7 @@ describe.skip('Acceptance: Tags', function () {
             await timeout(100);
 
             // it redirects to the new tag's URL
-            expect(currentURL(), 'URL after tag creation').to.equal('/tags/new-tag');
+            expect(currentURL(), 'URL after tag creation').to.equal('/settings/tags/new-tag');
 
             // it adds the tag to the list and selects
             tags = findAll('.settings-tags .settings-tag');
@@ -232,7 +225,7 @@ describe.skip('Acceptance: Tags', function () {
             expect(findAll('.settings-tags .settings-tag')[1].querySelector('.tag-title').textContent.trim(), 'new tag list item title');
             expect(tag.querySelector('.tag-title').textContent, 'new tag list item title')
                 .to.equal('New tag');
-            expect(find('a[href="/ghost/tags/new-tag"]'), 'highlights new tag')
+            expect(find('a[href="/ghost/settings/tags/new-tag"]'), 'highlights new tag')
                 .to.have.class('active');
 
             // delete tag
@@ -240,7 +233,7 @@ describe.skip('Acceptance: Tags', function () {
             await click('.fullscreen-modal .gh-btn-red');
 
             // it redirects to the first tag
-            expect(currentURL(), 'URL after tag deletion').to.equal(`/tags/${tag1.slug}`);
+            expect(currentURL(), 'URL after tag deletion').to.equal(`/settings/tags/${tag1.slug}`);
 
             // it removes the tag from the list
             expect(findAll('.settings-tags .settings-tag').length, 'tag list count after deletion')
@@ -253,19 +246,19 @@ describe.skip('Acceptance: Tags', function () {
         it.skip('loads tag via slug when accessed directly', async function () {
             this.server.createList('tag', 2);
 
-            await visit('/tags/tag-1');
+            await visit('/settings/tags/tag-1');
 
             // second wait is needed for the vertical-collection to settle
             await wait();
 
-            expect(currentURL(), 'URL after direct load').to.equal('/tags/tag-1');
+            expect(currentURL(), 'URL after direct load').to.equal('/settings/tags/tag-1');
 
             // it loads all other tags
             expect(findAll('.settings-tags .settings-tag').length, 'tag list count after direct load')
                 .to.equal(2);
 
             // selects tag in list
-            expect(find('a[href="/ghost/tags/tag-1"]').classList.contains('active'), 'highlights requested tag')
+            expect(find('a[href="/ghost/settings/tags/tag-1"]').classList.contains('active'), 'highlights requested tag')
                 .to.be.true;
 
             // shows requested tag in settings pane
@@ -276,12 +269,12 @@ describe.skip('Acceptance: Tags', function () {
         it('shows the internal tag label', async function () {
             this.server.create('tag', {name: '#internal-tag', slug: 'hash-internal-tag', visibility: 'internal'});
 
-            await visit('tags/');
+            await visit('settings/tags/');
 
             // second wait is needed for the vertical-collection to settle
             await wait();
 
-            expect(currentURL()).to.equal('/tags/hash-internal-tag');
+            expect(currentURL()).to.equal('/settings/tags/hash-internal-tag');
 
             expect(findAll('.settings-tags .settings-tag').length, 'tag list count')
                 .to.equal(1);
@@ -298,12 +291,12 @@ describe.skip('Acceptance: Tags', function () {
         it('updates the URL when slug changes', async function () {
             this.server.createList('tag', 2);
 
-            await visit('/tags/tag-1');
+            await visit('/settings/tags/tag-1');
 
             // second wait is needed for the vertical-collection to settle
             await wait();
 
-            expect(currentURL(), 'URL after direct load').to.equal('/tags/tag-1');
+            expect(currentURL(), 'URL after direct load').to.equal('/settings/tags/tag-1');
 
             // update the slug
             await fillIn('.tag-settings-pane input[name="slug"]', 'test');
@@ -319,10 +312,13 @@ describe.skip('Acceptance: Tags', function () {
                 return new Response(404, {'Content-Type': 'application/json'}, {errors: [{message: 'Tag not found.', type: 'NotFoundError'}]});
             });
 
-            await visit('tags/unknown');
+            errorOverride();
 
+            await visit('settings/tags/unknown');
+
+            errorReset();
             expect(currentRouteName()).to.equal('error404');
-            expect(currentURL()).to.equal('/tags/unknown');
+            expect(currentURL()).to.equal('/settings/tags/unknown');
         });
 
         it('sorts tags correctly', async function () {
@@ -331,7 +327,7 @@ describe.skip('Acceptance: Tags', function () {
             this.server.create('tag', {name: '#A - Second', slug: 'second'});
             this.server.create('tag', {name: 'A - First', slug: 'first'});
 
-            await visit('tags');
+            await visit('settings/tags');
 
             // second wait is needed for the vertical-collection to settle
             await wait();

@@ -7,7 +7,7 @@ import {inject as service} from '@ember/service';
 export default Component.extend({
     mediaQueries: service(),
 
-    classNames: ['view-container', 'tags-container'],
+    classNames: ['view-container'],
     classNameBindings: ['isMobile'],
 
     tags: null,

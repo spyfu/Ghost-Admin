@@ -5,7 +5,9 @@ import {expect} from 'chai';
 import {setupTest} from 'ember-mocha';
 
 describe('Integration: Service: config', function () {
-    setupTest();
+    setupTest('service:config', {
+        integration: true
+    });
 
     let server;
 
@@ -18,7 +20,7 @@ describe('Integration: Service: config', function () {
     });
 
     it('returns a list of timezones in the expected format', function (done) {
-        let service = this.owner.lookup('service:config');
+        let service = this.subject();
 
         service.get('availableTimezones').then(function (timezones) {
             expect(timezones.length).to.equal(66);
@@ -32,7 +34,7 @@ describe('Integration: Service: config', function () {
 
     it('normalizes blogUrl to non-trailing-slash', function (done) {
         let stubBlogUrl = function stubBlogUrl(url) {
-            server.get('/ghost/api/v3/admin/config/', function () {
+            server.get('/ghost/api/v2/admin/config/', function () {
                 return [
                     200,
                     {'Content-Type': 'application/json'},
@@ -40,7 +42,7 @@ describe('Integration: Service: config', function () {
                 ];
             });
 
-            server.get('/ghost/api/v3/admin/site/', function () {
+            server.get('/ghost/api/v2/admin/site/', function () {
                 return [
                     200,
                     {'Content-Type': 'application/json'},
@@ -52,7 +54,7 @@ describe('Integration: Service: config', function () {
                 ];
             });
         };
-        let service = this.owner.lookup('service:config');
+        let service = this.subject();
 
         stubBlogUrl('http://localhost:2368/');
 

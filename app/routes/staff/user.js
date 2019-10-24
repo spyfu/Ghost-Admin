@@ -1,8 +1,13 @@
 /* eslint-disable camelcase */
 import AuthenticatedRoute from 'ghost-admin/routes/authenticated';
 import CurrentUserSettings from 'ghost-admin/mixins/current-user-settings';
+import styleBody from 'ghost-admin/mixins/style-body';
 
-export default AuthenticatedRoute.extend(CurrentUserSettings, {
+export default AuthenticatedRoute.extend(styleBody, CurrentUserSettings, {
+    titleToken: 'Staff - User',
+
+    classNames: ['team-view-user'],
+
     model(params) {
         return this.store.queryRecord('user', {slug: params.user_slug, include: 'count.posts'});
     },
@@ -55,11 +60,5 @@ export default AuthenticatedRoute.extend(CurrentUserSettings, {
                 return;
             }
         }
-    },
-
-    buildRouteInfoMetadata() {
-        return {
-            titleToken: 'Staff - User'
-        };
     }
 });

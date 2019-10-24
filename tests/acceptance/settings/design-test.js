@@ -1,13 +1,13 @@
 import Mirage from 'ember-cli-mirage';
 import ctrlOrCmd from 'ghost-admin/utils/ctrl-or-cmd';
 import mockThemes from 'ghost-admin/mirage/config/themes';
+import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 import {authenticateSession, invalidateSession} from 'ember-simple-auth/test-support';
 import {beforeEach, describe, it} from 'mocha';
 import {blur, click, currentRouteName, currentURL, fillIn, find, findAll, triggerEvent, typeIn} from '@ember/test-helpers';
 import {expect} from 'chai';
 import {fileUpload} from '../../helpers/file-upload';
 import {setupApplicationTest} from 'ember-mocha';
-import {setupMirage} from 'ember-cli-mirage/test-support';
 import {visit} from '../../helpers/visit';
 
 // simulate jQuery's `:visible` pseudo-selector
@@ -383,7 +383,7 @@ describe('Acceptance: Settings - Design', function () {
                 theme.warnings = [{
                     level: 'warning',
                     rule: 'Assets such as CSS & JS must use the <code>{{asset}}</code> helper',
-                    details: '<p>The listed files should be included using the <code>{{asset}}</code> helper.  For more information, please see the <a href="https://ghost.org/docs/api/handlebars-themes/helpers/asset/">asset helper documentation</a>.</p>',
+                    details: '<p>The listed files should be included using the <code>{{asset}}</code> helper.  For more information, please see the <a href="https://docs.ghost.org/api/handlebars-themes/helpers/asset/">asset helper documentation</a>.</p>',
                     failures: [
                         {
                             ref: '/assets/dist/img/apple-touch-icon.png'
@@ -565,7 +565,7 @@ describe('Acceptance: Settings - Design', function () {
                 theme.update({warnings: [{
                     level: 'warning',
                     rule: 'Assets such as CSS & JS must use the <code>{{asset}}</code> helper',
-                    details: '<p>The listed files should be included using the <code>{{asset}}</code> helper.  For more information, please see the <a href="https://ghost.org/docs/api/handlebars-themes/helpers/asset/">asset helper documentation</a>.</p>',
+                    details: '<p>The listed files should be included using the <code>{{asset}}</code> helper.  For more information, please see the <a href="https://docs.ghost.org/api/handlebars-themes/helpers/asset/">asset helper documentation</a>.</p>',
                     failures: [
                         {
                             ref: '/assets/dist/img/apple-touch-icon.png'

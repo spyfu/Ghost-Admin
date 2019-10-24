@@ -2,6 +2,8 @@ import AuthenticatedRoute from 'ghost-admin/routes/authenticated';
 import CurrentUserSettings from '../../../mixins/current-user-settings';
 
 export default AuthenticatedRoute.extend(CurrentUserSettings, {
+    titleToken: 'Zapier',
+
     beforeModel() {
         this._super(...arguments);
         return this.get('session.user')
@@ -16,11 +18,5 @@ export default AuthenticatedRoute.extend(CurrentUserSettings, {
         return this
             .controllerFor('settings.integrations')
             .integrationModelHook('slug', 'zapier', this, transition);
-    },
-
-    buildRouteInfoMetadata() {
-        return {
-            titleToken: 'Zapier'
-        };
     }
 });

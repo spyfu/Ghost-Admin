@@ -1,13 +1,15 @@
 import {describe, it} from 'mocha';
 import {expect} from 'chai';
 import {run} from '@ember/runloop';
-import {setupTest} from 'ember-mocha';
+import {setupModelTest} from 'ember-mocha';
 
 describe('Unit: Model: role', function () {
-    setupTest();
+    setupModelTest('role', {
+        needs: ['service:ajax']
+    });
 
     it('provides a lowercase version of the name', function () {
-        let model = this.owner.lookup('service:store').createRecord('role', {
+        let model = this.subject({
             name: 'Author'
         });
 

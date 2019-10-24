@@ -1,49 +1,45 @@
 import Component from '@ember/component';
-import ShortcutsMixin from 'ghost-admin/mixins/shortcuts';
 import calculatePosition from 'ember-basic-dropdown/utils/calculate-position';
-import ctrlOrCmd from 'ghost-admin/utils/ctrl-or-cmd';
-import {and, equal, match} from '@ember/object/computed';
+import {computed} from '@ember/object';
 import {getOwner} from '@ember/application';
 import {htmlSafe} from '@ember/string';
 import {inject as service} from '@ember/service';
 
-export default Component.extend(ShortcutsMixin, {
+export default Component.extend({
     config: service(),
     feature: service(),
     ghostPaths: service(),
     router: service(),
     session: service(),
     ui: service(),
-    whatsNew: service(),
 
     tagName: 'nav',
     classNames: ['gh-nav'],
 
     iconStyle: '',
 
-    showSearchModal: false,
+    showMenuExtension: computed('config.clientExtensions.menu', 'session.user.isOwner', function () {
+        return this.get('config.clientExtensions.menu') && this.get('session.user.isOwner');
+    }),
 
-    shortcuts: null,
+    showDropdownExtension: computed('config.clientExtensions.dropdown', 'session.user.isOwner', function () {
+        return this.get('config.clientExtensions.dropdown') && this.get('session.user.isOwner');
+    }),
 
-    isIntegrationRoute: match('router.currentRouteName', /^settings\.integration/),
-    isSettingsRoute: match('router.currentRouteName', /^settings/),
+    showScriptExtension: computed('config.clientExtensions.script', 'session.user.isOwner', function () {
+        return this.get('config.clientExtensions.script') && this.get('session.user.isOwner');
+    }),
+
+    isIntegrationRoute: computed('router.currentRouteName', function () {
+        let re = /^settings\.integration/;
+        return re.test(this.router.currentRouteName);
+    }),
 
     // HACK: {{link-to}} should be doing this automatically but there appears to
     // be a bug in Ember that's preventing it from working immediately after login
-    isOnSite: equal('router.currentRouteName', 'site'),
-
-    showMenuExtension: and('config.clientExtensions.menu', 'session.user.isOwner'),
-    showDropdownExtension: and('config.clientExtensions.dropdown', 'session.user.isOwner'),
-    showScriptExtension: and('config.clientExtensions.script', 'session.user.isOwner'),
-
-    init() {
-        this._super(...arguments);
-
-        let shortcuts = {};
-
-        shortcuts[`${ctrlOrCmd}+k`] = {action: 'toggleSearchModal'};
-        this.shortcuts = shortcuts;
-    },
+    isOnSite: computed('router.currentRouteName', function () {
+        return this.router.currentRouteName === 'site';
+    }),
 
     // the menu has a rendering issue (#8307) when the the world is reloaded
     // during an import which we have worked around by not binding the icon
@@ -51,16 +47,6 @@ export default Component.extend(ShortcutsMixin, {
     // so that we can refresh when a new icon is uploaded
     didReceiveAttrs() {
         this._setIconStyle();
-    },
-
-    didInsertElement() {
-        this._super(...arguments);
-        this.registerShortcuts();
-    },
-
-    willDestroyElement() {
-        this.removeShortcuts();
-        this._super(...arguments);
     },
 
     actions: {
@@ -71,9 +57,6 @@ export default Component.extend(ShortcutsMixin, {
             } else {
                 this.router.transitionTo('site');
             }
-        },
-        toggleSearchModal() {
-            this.toggleProperty('showSearchModal');
         }
     },
 

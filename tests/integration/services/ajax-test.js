@@ -25,7 +25,9 @@ function stubAjaxEndpoint(server, response = {}, code = 200) {
 }
 
 describe('Integration: Service: ajax', function () {
-    setupTest();
+    setupTest('service:ajax', {
+        integration: true
+    });
 
     let server;
 
@@ -39,7 +41,7 @@ describe('Integration: Service: ajax', function () {
 
     it('adds Ghost version header to requests', function (done) {
         let {version} = config.APP;
-        let ajax = this.owner.lookup('service:ajax');
+        let ajax = this.subject();
 
         stubAjaxEndpoint(server, {});
 
@@ -54,7 +56,7 @@ describe('Integration: Service: ajax', function () {
         let error = {message: 'Test Error'};
         stubAjaxEndpoint(server, error, 500);
 
-        let ajax = this.owner.lookup('service:ajax');
+        let ajax = this.subject();
 
         ajax.request('/test/').then(() => {
             expect(false).to.be.true();
@@ -69,7 +71,7 @@ describe('Integration: Service: ajax', function () {
         let error = {error: 'Test Error'};
         stubAjaxEndpoint(server, error, 500);
 
-        let ajax = this.owner.lookup('service:ajax');
+        let ajax = this.subject();
 
         ajax.request('/test/').then(() => {
             expect(false).to.be.true();
@@ -84,7 +86,7 @@ describe('Integration: Service: ajax', function () {
         let error = {errors: ['First Error', 'Second Error']};
         stubAjaxEndpoint(server, error, 500);
 
-        let ajax = this.owner.lookup('service:ajax');
+        let ajax = this.subject();
 
         ajax.request('/test/').then(() => {
             expect(false).to.be.true();
@@ -99,7 +101,7 @@ describe('Integration: Service: ajax', function () {
     it('returns default error object for non built-in error', function (done) {
         stubAjaxEndpoint(server, {}, 500);
 
-        let ajax = this.owner.lookup('service:ajax');
+        let ajax = this.subject();
 
         ajax.request('/test/').then(() => {
             expect(false).to.be.true;
@@ -112,7 +114,7 @@ describe('Integration: Service: ajax', function () {
     it('handles error checking for built-in errors', function (done) {
         stubAjaxEndpoint(server, '', 401);
 
-        let ajax = this.owner.lookup('service:ajax');
+        let ajax = this.subject();
 
         ajax.request('/test/').then(() => {
             expect(false).to.be.true;
@@ -136,7 +138,7 @@ describe('Integration: Service: ajax', function () {
             ];
         });
 
-        let ajax = this.owner.lookup('service:ajax');
+        let ajax = this.subject();
 
         ajax.request('/test/').then(() => {
             expect(false).to.be.true;
@@ -149,7 +151,7 @@ describe('Integration: Service: ajax', function () {
     it('handles error checking for RequestEntityTooLargeError on 413 errors', function (done) {
         stubAjaxEndpoint(server, {}, 413);
 
-        let ajax = this.owner.lookup('service:ajax');
+        let ajax = this.subject();
 
         ajax.request('/test/').then(() => {
             expect(false).to.be.true;
@@ -162,7 +164,7 @@ describe('Integration: Service: ajax', function () {
     it('handles error checking for UnsupportedMediaTypeError on 415 errors', function (done) {
         stubAjaxEndpoint(server, {}, 415);
 
-        let ajax = this.owner.lookup('service:ajax');
+        let ajax = this.subject();
 
         ajax.request('/test/').then(() => {
             expect(false).to.be.true;
@@ -175,7 +177,7 @@ describe('Integration: Service: ajax', function () {
     it('handles error checking for MaintenanceError on 503 errors', function (done) {
         stubAjaxEndpoint(server, {}, 503);
 
-        let ajax = this.owner.lookup('service:ajax');
+        let ajax = this.subject();
 
         ajax.request('/test/').then(() => {
             expect(false).to.be.true;

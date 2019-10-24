@@ -61,37 +61,37 @@
 }
 
 .koenig-editor__editor h1 {
-    font-size: 3.2rem;
+    font-size: 3.3rem;
     line-height: 1.4em;
     letter-spacing: .04rem;
 }
 
 .koenig-editor__editor h2 {
-    font-size: 2.7rem;
+    font-size: 2.8rem;
     line-height: 1.4em;
     letter-spacing: .04rem;
 }
 
 .koenig-editor__editor h3 {
-    font-size: 2.2rem;
+    font-size: 2.3rem;
     line-height: 1.6em;
     letter-spacing: .04rem;
 }
 
 .koenig-editor__editor h4 {
-    font-size: 1.92rem;
+    font-size: 2.0rem;
     line-height: 1.4em;
     letter-spacing: .04rem;
 }
 
 .koenig-editor__editor h5 {
-    font-size: 1.8rem;
+    font-size: 1.9rem;
     line-height: 1.4em;
     letter-spacing: .06rem;
 }
 
 .koenig-editor__editor h6 {
-    font-size: 1.65rem;
+    font-size: 1.75rem;
     line-height: 1.6em;
     letter-spacing: .04rem;
 }
@@ -239,25 +239,25 @@
 .koenig-editor__editor ol
  {
     font-family: georgia,serif;
-    font-weight: 400;
+    font-weight: 300;
     letter-spacing: .02rem;
     line-height: 1.6em;
-    font-size: 1.92rem;
+    font-size: 2rem;
 }
 
 .koenig-editor__editor h1 + p {
-    margin: 1.0rem 0 0;
+    margin: 1.2rem 0 0;
 }
 
 .koenig-editor__editor h2 + p {
-    margin: 0.52rem 0 0;
+    margin: 0.8rem 0 0;
 }
 
 .koenig-editor__editor h3 + p,
 .koenig-editor__editor h4 + p,
 .koenig-editor__editor h5 + p,
 .koenig-editor__editor h6 + p {
-    margin: 0.52rem 0 0;
+    margin: .8rem 0 0;
 }
 
 .koenig-editor__editor p + p,
@@ -265,7 +265,7 @@
 .koenig-editor__editor ul + p,
 .koenig-editor__editor ol + p
  {
-    margin: 3.6rem 0 0;
+    margin: 3.2rem 0 0;
 }
 
 .koenig-editor__editor div + p { /* Mobiledoc cards can be addressed by their wrapper div element */
@@ -305,10 +305,7 @@
 }
 
 .koenig-editor__editor p + ul:not(.kg-action-bar):not(.kg-link-toolbar),
-.koenig-editor__editor p + ol {
-    margin: 1.0rem 0 0;
-}
-
+.koenig-editor__editor p + ol,
 .koenig-editor__editor ul:not(.kg-action-bar):not(.kg-link-toolbar) + ul:not(.kg-action-bar):not(.kg-link-toolbar),
 .koenig-editor__editor ul:not(.kg-action-bar):not(.kg-link-toolbar) + ol,
 .koenig-editor__editor ol + ul:not(.kg-action-bar):not(.kg-link-toolbar),
@@ -718,7 +715,7 @@
 
 .kg-action-bar:after {
     position: absolute;
-    top: 36px;
+    top: 40px;
     left: calc(50% - 8px);
     width: 0;
     border-top: 8px solid var(--darkgrey-d1);
@@ -768,7 +765,7 @@
 }
 
 .koenig-editor {
-    max-width: 740px;
+    max-width: 760px;
 }
 
 /* ⨁ menu
@@ -806,97 +803,13 @@
 
 /* Cards
 /* --------------------------------------------------------------- */
-.kg-bookmark-card {
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid var(--whitegrey);
-    background: var(--white);
-}
-
-.koenig-editor__editor .kg-bookmark-container {
-    display: flex;
-    color: var(--darkgrey);
-    text-decoration: none;
-    box-shadow: none;
-    min-height: 120px; /* Just to make sure it's not a super-tiny box */
-}
-
-.kg-bookmark-content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-basis: 100%;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 20px;
-}
-
-.kg-bookmark-title {
-    font-size: 1.5rem;
-    line-height: 1.5em;
-    font-weight: 600;
-}
-
-.kg-bookmark-container:hover .kg-bookmark-title {
-    color: var(--blue);
-}
-
-.kg-bookmark-description {
-    display: -webkit-box;
-    font-size: 1.4rem;
-    line-height: 1.5em;
-    margin-top: 10px;
-    color: var(--middarkgrey);
-    font-weight: 400;
-    max-height: 44px;
-    overflow-y: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-
-.kg-bookmark-thumbnail {
-    position: relative;
-    flex-grow: 1;
-    min-width: 33%;
-}
-
-.kg-bookmark-thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.koenig-card-click-overlay {
     position: absolute;
-    top: 0;
     left: 0;
-}
-
-.kg-bookmark-metadata {
-    color: var(--darkgrey);
-    font-size: 1.4rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    margin-top: 14px;
-}
-
-.kg-bookmark-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 6px;
-}
-
-.kg-bookmark-author:after {
-    content: "•";
-    margin: 0 6px;
-}
-
-.kg-bookmark-publisher {
-    color: var(--blue);
-    text-overflow: ellipsis;
-    overflow: hidden;
-    max-width: 240px;
-    white-space: nowrap;
-    display: block;
-    line-height: 1.65em;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 400;
 }
 
 

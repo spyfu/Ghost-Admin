@@ -1,10 +1,13 @@
 import Route from '@ember/routing/route';
 import UnauthenticatedRouteMixin from 'ghost-admin/mixins/unauthenticated-route-mixin';
+import styleBody from 'ghost-admin/mixins/style-body';
 import {inject as service} from '@ember/service';
 
-export default Route.extend(UnauthenticatedRouteMixin, {
+export default Route.extend(styleBody, UnauthenticatedRouteMixin, {
     notifications: service(),
     session: service(),
+
+    classNames: ['ghost-reset'],
 
     beforeModel() {
         if (this.get('session.isAuthenticated')) {
@@ -22,11 +25,5 @@ export default Route.extend(UnauthenticatedRouteMixin, {
     deactivate() {
         this._super(...arguments);
         this.controller.clearData();
-    },
-
-    buildRouteInfoMetadata() {
-        return {
-            bodyClasses: ['unauthenticated-route']
-        };
     }
 });

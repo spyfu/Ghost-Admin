@@ -17,7 +17,9 @@ export default Component.extend({
     zoom() {},
 
     style: computed('zoomed', function () {
-        return htmlSafe(this.zoomed ? 'width: auto; margin: 0;' : '');
+        if (this.zoomed) {
+            return htmlSafe('width: auto; margin: 0;');
+        }
     }),
 
     // avoid "binding style attributes" warnings
@@ -40,7 +42,7 @@ export default Component.extend({
     imageUrl: computed('photo.urls.regular', function () {
         let url = this.get('photo.urls.regular');
 
-        url = url.replace('&w=1080', '&w=1200');
+        url = url.replace(/&w=1080/, '&w=1200');
 
         return url;
     }),

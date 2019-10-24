@@ -35,7 +35,6 @@ export default Component.extend({
         run(function () {
             document.activeElement.blur();
         });
-
         this._previousKeymasterScope = key.getScope();
 
         key('enter', 'modal', () => {
@@ -52,6 +51,7 @@ export default Component.extend({
     _removeShortcuts() {
         key.unbind('enter', 'modal');
         key.unbind('escape', 'modal');
+
         key.setScope(this._previousKeymasterScope);
     }
 });

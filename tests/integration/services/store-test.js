@@ -5,7 +5,9 @@ import {expect} from 'chai';
 import {setupTest} from 'ember-mocha';
 
 describe('Integration: Service: store', function () {
-    setupTest();
+    setupTest('service:store', {
+        integration: true
+    });
 
     let server;
 
@@ -19,9 +21,9 @@ describe('Integration: Service: store', function () {
 
     it('adds Ghost version header to requests', function (done) {
         let {version} = config.APP;
-        let store = this.owner.lookup('service:store');
+        let store = this.subject();
 
-        server.get('/ghost/api/v3/admin/posts/1/', function () {
+        server.get('/ghost/api/v2/admin/posts/1/', function () {
             return [
                 404,
                 {'Content-Type': 'application/json'},

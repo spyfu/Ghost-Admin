@@ -1,7 +1,7 @@
 /* eslint-disable ghost/ember/alias-model-in-controller */
 import $ from 'jquery';
 import Controller from '@ember/controller';
-import generatePassword from 'ghost-admin/utils/password-generator';
+import randomPassword from 'ghost-admin/utils/random-password';
 import validator from 'validator';
 import {
     IMAGE_EXTENSIONS,
@@ -14,20 +14,12 @@ import {task} from 'ember-concurrency';
 
 const ICON_EXTENSIONS = ['ico', 'png'];
 
-function randomPassword() {
-    let word = generatePassword(6);
-    let randomN = Math.floor(Math.random() * 1000);
-
-    return word + randomN;
-}
-
 export default Controller.extend({
     config: service(),
     ghostPaths: service(),
     notifications: service(),
     session: service(),
     settings: service(),
-    ui: service(),
 
     availableTimezones: null,
     iconExtensions: null,
@@ -280,8 +272,9 @@ export default Controller.extend({
             let settings = yield this.settings.save();
             config.set('blogTitle', settings.get('title'));
 
-            // this forces the document title to recompute after a blog title change
-            this.ui.updateDocumentTitle();
+            // this forces the document title to recompute after
+            // a blog title change
+            this.send('updateDocumentTitle');
 
             return settings;
         } catch (error) {

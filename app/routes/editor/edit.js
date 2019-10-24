@@ -24,7 +24,8 @@ export default AuthenticatedRoute.extend({
         }
 
         let query = {
-            id: post_id
+            id: post_id,
+            status: 'all'
         };
 
         return this.store.query(modelName, query)
@@ -38,7 +39,7 @@ export default AuthenticatedRoute.extend({
         this._super(...arguments);
 
         return this.get('session.user').then((user) => {
-            let returnRoute = pluralize(post.constructor.modelName);
+            let returnRoute = `${pluralize(post.constructor.modelName)}.index`;
 
             if (user.get('isAuthorOrContributor') && !post.isAuthoredByUser(user)) {
                 return this.replaceWith(returnRoute);

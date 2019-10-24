@@ -17,16 +17,28 @@ import {setupTest} from 'ember-mocha';
 // ]`;
 
 describe('Unit: Controller: settings/design', function () {
-    setupTest();
+    setupTest('controller:settings/design', {
+        // Specify the other units that are required for this test.
+        needs: [
+            'model:navigation-item',
+            'service:ajax',
+            'service:config',
+            'service:ghostPaths',
+            'service:notifications',
+            'service:session',
+            'service:upgrade-status',
+            'service:settings'
+        ]
+    });
 
     it('blogUrl: captures config and ensures trailing slash', function () {
-        let ctrl = this.owner.lookup('controller:settings/design');
+        let ctrl = this.subject();
         ctrl.set('config.blogUrl', 'http://localhost:2368/blog');
         expect(ctrl.get('blogUrl')).to.equal('http://localhost:2368/blog/');
     });
 
     it('init: creates a new navigation item', function () {
-        let ctrl = this.owner.lookup('controller:settings/design');
+        let ctrl = this.subject();
 
         run(() => {
             expect(ctrl.get('newNavItem')).to.exist;
@@ -35,13 +47,13 @@ describe('Unit: Controller: settings/design', function () {
     });
 
     it('blogUrl: captures config and ensures trailing slash', function () {
-        let ctrl = this.owner.lookup('controller:settings/design');
+        let ctrl = this.subject();
         ctrl.set('config.blogUrl', 'http://localhost:2368/blog');
         expect(ctrl.get('blogUrl')).to.equal('http://localhost:2368/blog/');
     });
 
     it('save: validates nav items', function (done) {
-        let ctrl = this.owner.lookup('controller:settings/design');
+        let ctrl = this.subject();
 
         run(() => {
             ctrl.set('settings', EmberObject.create({navigation: [
@@ -66,7 +78,7 @@ describe('Unit: Controller: settings/design', function () {
     });
 
     it('save: ignores blank last item when saving', function (done) {
-        let ctrl = this.owner.lookup('controller:settings/design');
+        let ctrl = this.subject();
 
         run(() => {
             ctrl.set('settings', EmberObject.create({navigation: [
@@ -88,7 +100,7 @@ describe('Unit: Controller: settings/design', function () {
     });
 
     it('action - addNavItem: adds item to navigationItems', function () {
-        let ctrl = this.owner.lookup('controller:settings/design');
+        let ctrl = this.subject();
 
         run(() => {
             ctrl.set('settings', EmberObject.create({navigation: [
@@ -115,7 +127,7 @@ describe('Unit: Controller: settings/design', function () {
     });
 
     it('action - addNavItem: doesn\'t insert new item if last object is incomplete', function () {
-        let ctrl = this.owner.lookup('controller:settings/design');
+        let ctrl = this.subject();
 
         run(() => {
             ctrl.set('settings', EmberObject.create({navigation: [
@@ -128,7 +140,7 @@ describe('Unit: Controller: settings/design', function () {
     });
 
     it('action - deleteNavItem: removes item from navigationItems', function () {
-        let ctrl = this.owner.lookup('controller:settings/design');
+        let ctrl = this.subject();
         let navItems = [
             NavItem.create({label: 'First', url: '/first'}),
             NavItem.create({label: 'Second', url: '/second', last: true})
@@ -143,7 +155,7 @@ describe('Unit: Controller: settings/design', function () {
     });
 
     it('action - updateUrl: updates URL on navigationItem', function () {
-        let ctrl = this.owner.lookup('controller:settings/design');
+        let ctrl = this.subject();
         let navItems = [
             NavItem.create({label: 'First', url: '/first'}),
             NavItem.create({label: 'Second', url: '/second', last: true})

@@ -18,7 +18,7 @@ describe('Integration: Component: gh-unsplash', function () {
         // `);
 
         await render(hbs`{{gh-unsplash}}`);
-        expect(this.element).to.exist;
+        expect(this.$()).to.have.length(1);
     });
 
     it('loads new photos by default');

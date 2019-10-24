@@ -4,17 +4,20 @@ import RSVP from 'rsvp';
 import Route from '@ember/routing/route';
 import UnauthenticatedRouteMixin from 'ghost-admin/mixins/unauthenticated-route-mixin';
 import ValidationEngine from 'ghost-admin/mixins/validation-engine';
+import styleBody from 'ghost-admin/mixins/style-body';
 import {inject as service} from '@ember/service';
 
 const {Promise} = RSVP;
 const {Errors} = DS;
 
-export default Route.extend(UnauthenticatedRouteMixin, {
+export default Route.extend(styleBody, UnauthenticatedRouteMixin, {
     ghostPaths: service(),
     notifications: service(),
     session: service(),
     ajax: service(),
     config: service(),
+
+    classNames: ['ghost-signup'],
 
     beforeModel() {
         if (this.get('session.isAuthenticated')) {
@@ -79,11 +82,5 @@ export default Route.extend(UnauthenticatedRouteMixin, {
 
         // clear the properties that hold the sensitive data from the controller
         this.controllerFor('signup').get('signupDetails').setProperties({email: '', password: '', token: ''});
-    },
-
-    buildRouteInfoMetadata() {
-        return {
-            bodyClasses: ['unauthenticated-route']
-        };
     }
 });

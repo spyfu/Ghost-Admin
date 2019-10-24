@@ -20,6 +20,9 @@ const FeatureFlagComponent = Component.extend({
             return this._flagValue;
         },
         set(key, value) {
+            if (this.flag === 'members' && value === true) {
+                this.set(`feature.subscribers`, false);
+            }
             return this.set(`feature.${this.flag}`, value);
         }
     }),

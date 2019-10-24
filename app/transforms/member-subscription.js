@@ -6,7 +6,7 @@ export default Transform.extend({
     deserialize(serialized) {
         let subscriptions, subscriptionArray;
 
-        subscriptionArray = serialized.subscriptions || [];
+        subscriptionArray = serialized || [];
 
         subscriptions = subscriptionArray.map(itemDetails => MemberSubscription.create(itemDetails));
 
@@ -18,14 +18,18 @@ export default Transform.extend({
 
         if (isEmberArray(deserialized)) {
             subscriptionArray = deserialized.map((item) => {
-                return item;
+                let adapter = item.get('adapter').trim();
+                let amount = item.get('amount');
+                let plan = item.get('plan').trim();
+                let status = item.get('status').trim();
+                let validUntil = item.get('validUntil');
+
+                return {adapter, amount, plan, status, validUntil};
             }).compact();
         } else {
             subscriptionArray = [];
         }
 
-        return {
-            subscriptions: subscriptionArray
-        };
+        return subscriptionArray;
     }
 });

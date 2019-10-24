@@ -27,7 +27,7 @@ export default AuthenticatedRoute.extend(ShortcutsRoute, {
         this._super(...arguments);
 
         // edge has known issues
-        if (this.userAgent.browser.isEdge && this.userAgent.parser.getEngine().name === 'EdgeHTML') {
+        if (this.userAgent.browser.isEdge) {
             this.notifications.showAlert(
                 htmlSafe('Microsoft Edge is not currently supported. Please switch to <a href="https://ghost.org/downloads/" target="_blank" rel="noopener">Ghost Desktop</a> or a recent version of Chrome/Firefox/Safari.'),
                 {type: 'info', key: 'koenig.browserSupport'}
@@ -81,13 +81,8 @@ export default AuthenticatedRoute.extend(ShortcutsRoute, {
         }
     },
 
-    buildRouteInfoMetadata() {
-        return {
-            titleToken: () => {
-                return this.get('controller.post.title') || 'Editor';
-            },
-            mainClasses: ['gh-main-white']
-        };
+    titleToken() {
+        return this.get('controller.post.title') || 'Editor';
     },
 
     _blurAndScheduleAction(func) {

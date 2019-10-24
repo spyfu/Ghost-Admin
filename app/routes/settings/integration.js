@@ -1,16 +1,10 @@
 import AuthenticatedRoute from 'ghost-admin/routes/authenticated';
 import CurrentUserSettings from 'ghost-admin/mixins/current-user-settings';
-import {inject as service} from '@ember/service';
+import styleBody from 'ghost-admin/mixins/style-body';
 
-export default AuthenticatedRoute.extend(CurrentUserSettings, {
-    router: service(),
-
-    init() {
-        this._super(...arguments);
-        this.router.on('routeWillChange', (transition) => {
-            this.showUnsavedChangesModal(transition);
-        });
-    },
+export default AuthenticatedRoute.extend(styleBody, CurrentUserSettings, {
+    titleToken: 'Settings - Integrations',
+    classNames: ['settings-view-integration'],
 
     beforeModel() {
         this._super(...arguments);
@@ -31,11 +25,9 @@ export default AuthenticatedRoute.extend(CurrentUserSettings, {
     actions: {
         save() {
             this.controller.send('save');
-        }
-    },
+        },
 
-    showUnsavedChangesModal(transition) {
-        if (transition.from && transition.from.name.match(/^settings\.integration\./) && transition.targetName) {
+        willTransition(transition) {
             let {controller} = this;
 
             // check to see if we're navigating away from the custom integration
@@ -43,10 +35,9 @@ export default AuthenticatedRoute.extend(CurrentUserSettings, {
             // "unsaved changes" confirmation modal
             let isExternalRoute =
                 // allow sub-routes of settings.integration
-                !(transition.targetName || '').match(/^settings\.integration\./)
+                !transition.targetName.match(/^settings\.integration\./)
                 // do not allow changes in integration
-                // .to will be the index, so use .to.parent to get the route with the params
-                || transition.to.parent.params.integration_id !== controller.integration.id;
+                || transition.params['settings.integration'].integration_id !== controller.integration.id;
 
             if (isExternalRoute && !controller.integration.isDeleted && controller.integration.hasDirtyAttributes) {
                 transition.abort();
@@ -54,11 +45,5 @@ export default AuthenticatedRoute.extend(CurrentUserSettings, {
                 return;
             }
         }
-    },
-
-    buildRouteInfoMetadata() {
-        return {
-            titleToken: 'Settings - Integrations'
-        };
     }
 });

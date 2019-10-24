@@ -5,35 +5,32 @@ import {inject as service} from '@ember/service';
 
 export default AuthenticatedRoute.extend({
     infinity: service(),
-    router: service(),
 
     queryParams: {
-        type: {refreshModel: true},
-        author: {refreshModel: true},
-        tag: {refreshModel: true},
-        order: {refreshModel: true}
+        type: {
+            refreshModel: true,
+            replace: true
+        },
+        author: {
+            refreshModel: true,
+            replace: true
+        },
+        tag: {
+            refreshModel: true,
+            replace: true
+        },
+        order: {
+            refreshModel: true,
+            replace: true
+        }
     },
 
+    titleToken: 'Posts',
     modelName: 'post',
 
     perPage: 30,
 
-    init() {
-        this._super(...arguments);
-
-        // if we're already on this route and we're transiting _to_ this route
-        // then the filters are being changed and we shouldn't create a new
-        // browser history entry
-        // see https://github.com/TryGhost/Ghost/issues/11057
-        this.router.on('routeWillChange', (transition) => {
-            if (transition.to && (this.routeName === 'posts' || this.routeName === 'pages')) {
-                let toThisRoute = transition.to.find(route => route.name === this.routeName);
-                if (transition.from && transition.from.name === this.routeName && toThisRoute) {
-                    transition.method('replace');
-                }
-            }
-        });
-    },
+    _type: null,
 
     model(params) {
         return this.session.user.then((user) => {
@@ -97,6 +94,12 @@ export default AuthenticatedRoute.extend({
     },
 
     actions: {
+        willTransition() {
+            if (this.controller) {
+                this.resetController();
+            }
+        },
+
         queryParamsDidChange() {
             // scroll back to the top
             let contentList = document.querySelector('.content-list');
@@ -106,12 +109,6 @@ export default AuthenticatedRoute.extend({
 
             this._super(...arguments);
         }
-    },
-
-    buildRouteInfoMetadata() {
-        return {
-            titleToken: 'Posts'
-        };
     },
 
     _getTypeFilters(type) {

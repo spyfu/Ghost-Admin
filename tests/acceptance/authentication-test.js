@@ -1,3 +1,4 @@
+import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 import windowProxy from 'ghost-admin/utils/window-proxy';
 import {Response} from 'ember-cli-mirage';
 import {afterEach, beforeEach, describe, it} from 'mocha';
@@ -6,7 +7,6 @@ import {click, currentRouteName, currentURL, fillIn, findAll, visit} from '@embe
 import {expect} from 'chai';
 import {run} from '@ember/runloop';
 import {setupApplicationTest} from 'ember-mocha';
-import {setupMirage} from 'ember-cli-mirage/test-support';
 
 describe('Acceptance: Authentication', function () {
     let originalReplaceLocation;

@@ -36,8 +36,6 @@ export default Component.extend({
         if (errors && !isEmpty(errors.errorsFor(property))) {
             return errors.errorsFor(property).get('firstObject').message;
         }
-
-        return '';
     }),
 
     timeError: computed('errors.[]', 'timeErrorProperty', function () {
@@ -47,8 +45,6 @@ export default Component.extend({
         if (errors && !isEmpty(errors.errorsFor(property))) {
             return errors.errorsFor(property).get('firstObject').message;
         }
-
-        return '';
     }),
 
     didReceiveAttrs() {

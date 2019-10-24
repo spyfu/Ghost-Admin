@@ -3,10 +3,9 @@ import {expect} from 'chai';
 import {setupTest} from 'ember-mocha';
 
 describe('Unit: Transform: facebook-url-user', function () {
-    setupTest();
-
+    setupTest('transform:facebook-url-user', {});
     it('deserializes facebook url', function () {
-        let transform = this.owner.lookup('transform:facebook-url-user');
+        let transform = this.subject();
         let serialized = 'testuser';
         let result = transform.deserialize(serialized);
 
@@ -14,7 +13,7 @@ describe('Unit: Transform: facebook-url-user', function () {
     });
 
     it('serializes url to facebook username', function () {
-        let transform = this.owner.lookup('transform:facebook-url-user');
+        let transform = this.subject();
         let deserialized = 'https://www.facebook.com/testuser';
         let result = transform.serialize(deserialized);
 

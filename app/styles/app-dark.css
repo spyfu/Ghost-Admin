@@ -37,8 +37,6 @@
 @import "components/tour.css";
 @import "components/unsplash.css";
 @import "components/codemirror.css";
-@import "components/lists.css";
-@import "components/tabs.css";
 
 
 /* Layouts: Groups of Components
@@ -53,20 +51,17 @@
 @import "layouts/user.css";
 @import "layouts/about.css";
 @import "layouts/tags.css";
-@import "layouts/members.css";
 @import "layouts/error.css";
 @import "layouts/apps.css";
 @import "layouts/packages.css";
+@import "layouts/subscribers.css";
 @import "layouts/labs.css";
-@import "layouts/whats-new.css";
 
 
 :root {
     --darkgrey: #e5eff5;
     --midgrey: #738a94;
     --lightgrey: #333F44;
-    --dark-main-bg-color: #263238;
-    --blue: color-mod(#3eb0ef l(+5%) s(+5%));
 }
 
 body {
@@ -85,12 +80,7 @@ hr {
 input,
 .gh-input,
 .gh-select,
-.for-switch .input-toggle-component,
-.gh-select select,
-.settings-menu-container:not(.ember-power-select-multiple-trigger):not(.tag-settings) input,
-.settings-menu-container:not(.tag-settings) .gh-input,
-.settings-menu-pane .gh-date-time-picker-date,
-.settings-menu-pane .gh-date-time-picker-time {
+.gh-select select {
     color: var(--darkgrey);
     border-color: color-mod(var(--lightgrey));
     background: color-mod(var(--lightgrey));
@@ -109,21 +99,8 @@ input:focus,
     border-color: color-mod(var(--lightgrey) l(+10%));
 }
 
-.gh-input-append {
-    border-color: color-mod(var(--lightgrey));
-}
-
-.gh-input-group .gh-input:focus + .gh-input-append {
-    border-color: color-mod(var(--lightgrey) l(+10%));
-}
-
-.gh-input-append,
-.gh-input-append:before {
-    background: color-mod(var(--lightgrey));
-}
-
-.settings-menu-container,
-.gh-main-white {
+.gh-nav,
+.settings-menu-container {
     background: #212A2E;
 }
 
@@ -167,58 +144,46 @@ input:focus,
 }
 
 .gh-main,
-.gh-nav,
 .gh-unsplash-window {
-    background: var(--dark-main-bg-color);
-}
-
-.gh-image-uploader-unsplash {
-    filter: invert(100%);
+    background: #263238;
 }
 
 .gh-btn {
+    border: color-mod(var(--darkgrey) l(-27%) blackness(+15%)) 1px solid ;
     color: color-mod(var(--darkgrey) l(-27%) blackness(+15%));
     text-shadow: none;
 }
 
-.gh-btn:not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red) {
-    border: color-mod(var(--darkgrey) l(-27%) blackness(+15%)) 1px solid;
-}
-
-.view-actions .gh-btn:not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red) {
-    border-color: color-mod(var(--darkgrey) l(-27%) blackness(+15%) alpha(50%));
-}
-
-.gh-btn-group .gh-btn:first-of-type {
-    border-right: none !important;
+.gh-btn:hover:not(.gh-btn-link) {
+    border-color: color-mod(var(--darkgrey) l(-10%));
+    color: color-mod(var(--darkgrey) l(-10%));
 }
 
 .gh-btn-blue,
 .gh-btn-green,
 .gh-btn-red {
     color: #fff;
+    border: 0;
 }
 
 .gh-btn-blue:hover,
 .gh-btn-green:hover,
 .gh-btn-red:hover {
+    border-color: white;
     color: white;
 }
 
 .gh-btn-link {
-    border: none !important;
+    border: none;
 }
-
 
 .settings-menu-delete-button {
     color: var(--red);
-    border: none !important;
-    border-color: transparent;
 }
 
 .gh-publishmenu-trigger {
     color: var(--blue);
-    border: none !important;
+    border: none;
 }
 
 .gh-publishmenu-trigger svg path {
@@ -233,7 +198,6 @@ input:focus,
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus,
 .dropdown-menu > li > button:hover, .dropdown-menu > li > button:focus {
     color: var(--lightgrey);
-    background: color-mod(var(--dark-main-bg-color) l(-2%));
 }
 
 .gh-cardmenu {
@@ -305,10 +269,6 @@ input:focus,
     background: rgba(0,0,0,0.5);
 }
 
-.fullscreen-modal-background {
-    background: #000;
-}
-
 .modal-content {
     background: #212A2E;
 }
@@ -335,7 +295,7 @@ input:focus,
 }
 
 .gh-editor-header-small {
-    background: var(--dark-main-bg-color);
+    background: #263238;
 }
 
 .gh-markdown-editor .CodeMirror-cursor {
@@ -347,16 +307,8 @@ input:focus,
     filter: invert(100%) brightness(150%);
 }
 
-.gh-canvas-background {
-    background: #212a2e;
-}
-
 .gh-canvas-title span path {
     fill: var(--darkgrey);
-}
-
-.gh-canvas-header {
-    background: var(--dark-main-bg-color);
 }
 
 .gh-loading-spinner {
@@ -388,27 +340,9 @@ input:focus,
     background: var(--lightgrey);
 }
 
-.settings-menu-expanded .content-cover,
-.mobile-menu-expanded .content-cover {
-    background: transparent;
-}
-
 .gh-box {
     background: var(--lightgrey);
     color: var(--darkgrey);
-}
-
-.apps-grid,
-.apps-grid-cell {
-    background: #212A2E;
-}
-
-.td-cta-box {
-    background: #212A2E;
-}
-
-.id-item {
-    background: #212A2E;
 }
 
 .CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
@@ -419,6 +353,10 @@ input:focus,
     color: color-mod(#183691 l(+25%));
 }
 
+.subscribers-table table .gh-btn svg {
+    fill: var(--darkgrey);
+}
+
 .id-mailchimp img,
 .id-typeform img,
 .id-buffer img,
@@ -426,20 +364,8 @@ input:focus,
     filter: invert(100%);
 }
 
-.gh-nav {
-    border-right: none;
-}
-
 .gh-nav-list a {
     color: color-mod(var(--midgrey) l(+10%) s(-5%));
-}
-
-.gh-nav-list a:not(.active):not(.gh-secondary-action):hover,
-.gh-nav-list .gh-secondary-action:hover span,
-.gh-nav-bottom .ember-basic-dropdown-trigger:hover,
-.gh-nav-list .active,
-.gh-nav-btn-search:hover {
-    background: color-mod(var(--dark-main-bg-color) l(+5%) s(-5%))
 }
 
 .gh-nav-list .gh-nav-nightshift span svg path {
@@ -448,39 +374,4 @@ input:focus,
 
 .apps-card-app-icon {
     mix-blend-mode: normal;
-}
-
-.gh-nav,
-.gh-contentfilter-menu-trigger,
-.gh-contentfilter-menu-trigger--active,
-.gh-contentfilter-menu-trigger:focus,
-.tags-container,
-.content-list ol {
-    background: #212A2E;
-}
-
-.gh-posts-list-item:hover,
-.ember-power-select-option[aria-current=true],
-.ember-power-select-group .ember-power-select-option[aria-current=true],
-.gh-list-row:not(.header):not(.loading):hover .gh-list-cell,
-.gh-list-row:not(.header):not(.loading):hover .gh-list-data,
-.settings-tag .tag-edit-button.active {
-    background: color-mod(var(--dark-main-bg-color) l(-2%));
-}
-
-.tag-settings .gh-image-uploader {
-    background-color: transparent;
-}
-
-/* Dark style Lists */
-
-.gh-list {
-    background: #212A2E;
-}
-
-.gh-list-header,
-.gh-list-row:not(.header):hover .gh-list-cell,
-.gh-list-row:not(.header):hover .gh-list-data,
-.apps-grid-cell:hover {
-    background: color-mod(var(--lightgrey) l(-9%));
 }
